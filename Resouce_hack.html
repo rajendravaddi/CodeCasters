@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Resource Management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .resource-table thead th {
+            text-align: center;
+        }
+        .resource-table tbody td {
+            text-align: center;
+        }
+        .btn-resource {
+            margin: 5px;
+        }
+        .modal-body {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .request-list {
+            margin-top: 20px;
+        }
+        .request-list table {
+            margin-top: 20px;
+        }
+        .request-list thead th, .request-list tbody td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mt-5">Resource Management for College Events</h2>
+        <div class="form-group mt-3">
+            <label for="eventSelect">Select Event:</label>
+            <select class="form-control" id="eventSelect">
+                <option value="" disabled selected>Select an event</option>
+                <!-- Event options will be dynamically added here -->
+                <option value="Cultural Fest">Cultural Fest</option>
+                <option value="Technical Symposium">Technical Symposium</option>
+                <option value="Sports Meet">Sports Meet</option>
+            </select>
+        </div>
+        <div id="resourceManagementContainer" style="display: relative;">
+            <h3>Resources Required</h3>
+            <table class="table table-bordered resource-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Resource Name</th>
+                        <th>Availability</th>
+                        <th>Allocated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resourceTableBody">
+                    <!-- Resource rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Resource Request List -->
+        <div class="request-list" style="display: none;">
+            <h3>Requested Resources</h3>
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Resource Name</th>
+                        <th>Requested By</th>
+                        <th>Requested Quantity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requestTableBody">
+                    <!-- Request rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add/Edit Resource Modal -->
+        <div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="resourceModalLabel">Add/Edit Resource</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="resourceForm">
+                            <div class="form-group">
+                                <label for="resourceName">Resource Name:</label>
+                                <input type="text" class="form-control" id="resourceName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="resourceAvailability">Availability:</label>
+                                <input type="number" class="form-control" id="resourceAvailability" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="resourceAllocation">Allocate:</label>
+                                <input type="number" class="form-control" id="resourceAllocation" min="0" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resource Request Modal -->
+        <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="requestModalLabel">Request Resource</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="requestForm">
+                            <div class="form-group">
+                                <label for="requestResourceName">Resource Name:</label>
+                                <input type="text" class="form-control" id="requestResourceName" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="requestQuantity">Requested Quantity:</label>
+                                <input type="number" class="form-control" id="requestQuantity" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="requesterName">Your Name:</label>
+                                <input type="text" class="form-control" id="requesterName" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Request</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="alert alert-success" role="alert" style="display: none;">
+            Action completed successfully!
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let currentResourceIndex = null;
+
+            // Fetch resources from the server
+            function fetchResources() {
+                $.get('http://localhost:3000/api/resources', function (data) {
+                    resources = data;
+                    displayResources();
+                });
+            }
+
+            // Fetch requests from the server
+            function fetchRequests() {
+                $.get('http://localhost:3000/api/requests', function (data) {
+                    requests = data;
+                    displayRequests();
+                });
+            }
+
+            // Display resources in the table
+            function displayResources() {
+                const resourceTableBody = $('#resourceTableBody');
+                resourceTableBody.empty();
+                resources.forEach((resource, index) => {
+                    resourceTableBody.append(`
+                        <tr data-index="${index}">
+                            <td>${resource.name}</td>
+                            <td>${resource.availability}</td>
+                            <td>${resource.allocation}</td>
+                            <td>
+                                <button class="btn btn-warning btn-resource edit-resource">Edit</button>
+                                <button class="btn btn-danger btn-resource delete-resource">Delete</button>
+                                <button class="btn btn-info btn-resource request-resource">Request</button>
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            // Display resource requests in the table
+            function displayRequests() {
+                const requestTableBody = $('#requestTableBody');
+                requestTableBody.empty();
+                requests.forEach((request, index) => {
+                    requestTableBody.append(`
+                        <tr data-index="${index}">
+                            <td>${request.resourceName}</td>
+                            <td>${request.requesterName}</td>
+                            <td>${request.requestedQuantity}</td>
+                            <td>${request.status}</td>
+                            <td>
+                                ${request.status === 'Pending' ? '<button class="btn btn-success btn-resource approve-request">Approve</button><button class="btn btn-danger btn-resource reject-request">Reject</button>' : ''}
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            // Show the resource modal for adding/editing resources
+            $('#addResourceBtn, .edit-resource').click(function () {
+                if ($(this).hasClass('edit-resource')) {
+                    currentResourceIndex = $(this).closest('tr').data('index');
+                    const resource = resources[currentResourceIndex];
+                    $('#resourceName').val(resource.name);
+                    $('#resourceAvailability').val(resource.availability);
+                    $('#resourceAllocation').val(resource.allocation);
+                    $('#resourceModalLabel').text('Edit Resource');
+                } else {
+                    currentResourceIndex = null;
+                    $('#resourceForm')[0].reset();
+                    $('#resourceModalLabel').text('Add Resource');
+                }
+                $('#resourceModal').modal('show');
+            });
+
+            // Handle resource form submission
+            $('#resourceForm').submit(function (e) {
+                e.preventDefault();
+                const resourceName = $('#resourceName').val();
+                const resourceAvailability = parseInt($('#resourceAvailability').val());
+                const resourceAllocation = parseInt($('#resourceAllocation').val());
+                const resourceData = {
+                    name: resourceName,
+                    availability: resourceAvailability,
+                    allocation: resourceAllocation
+                };
+
+                if (currentResourceIndex !== null) {
+                    resourceData.index = currentResourceIndex;
+                }
+
+                $.post('http://localhost:3000/api/resources', resourceData, function () {
+                    $('#resourceModal').modal('hide');
+                    fetchResources();
+                    showSuccessMessage();
+                });
+            });
+
+            // Delete a resource
+            $('#resourceTableBody').on('click', '.delete-resource', function () {
+                const index = $(this).closest('tr').data('index');
+                $.ajax({
+                    url: `http://localhost:3000/api/resources/${index}`,
+                    type: 'DELETE',
+                    success: function () {
+                        fetchResources();
+                        showSuccessMessage();
+                    }
+                });
+            });
+
+            // Request a resource
+            $('#resourceTableBody').on('click', '.request-resource', function () {
+                const index = $(this).closest('tr').data('index');
+                const resource = resources[index];
+                $('#requestResourceName').val(resource.name);
+                $('#requestQuantity').attr('max', resource.availability);
+                $('#requestModal').modal('show');
+            });
+
+            // Handle resource request form submission
+            $('#requestForm').submit(function (e) {
+                e.preventDefault();
+                const requestData = {
+                    resourceName: $('#requestResourceName').val(),
+                    requestedQuantity: parseInt($('#requestQuantity').val()),
+                    requesterName: $('#requesterName').val()
+                };
+
+                $.post('http://localhost:3000/api/requests', requestData, function () {
+                    $('#requestModal').modal('hide');
+                    fetchRequests();
+                    showSuccessMessage();
+                });
+            });
+
+            // Approve a request
+            $('#requestTableBody').on('click', '.approve-request', function () {
+                const index = $(this).closest('tr').data('index');
+                $.post(`http://localhost:3000/api/requests/approve/${index}`, function () {
+                    fetchResources();
+                    fetchRequests();
+                    showSuccessMessage();
+                });
+            });
+
+            // Reject a request
+            $('#requestTableBody').on('click', '.reject-request', function () {
+                const index = $(this).closest('tr').data('index');
+                $.post(`http://localhost:3000/api/requests/reject/${index}`, function () {
+                    fetchRequests();
+                    showSuccessMessage();
+                });
+            });
+
+            // Show success message
+            function showSuccessMessage() {
+                $('#successMessage').fadeIn().delay(2000).fadeOut();
+            }
+
+            // Fetch initial data
+            fetchResources();
+            fetchRequests();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Timeline</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            list-style: none;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 20px;
+            width: 4px;
+            background: #e9ecef;
+        }
+
+        .timeline > li {
+            position: relative;
+            margin: 20px 0;
+            padding-left: 50px;
+        }
+
+        .timeline > li::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e9ecef;
+            border: 2px solid #fff;
+        }
+
+        .timeline > li.completed::before {
+            background: green;
+        }
+
+        .timeline > li.current::before {
+            background: blue;
+        }
+
+        .timeline > li > .timeline-panel {
+            position: relative;
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #d4d9df;
+            border-radius: 4px;
+        }
+
+        .timeline > li > .timeline-panel > .btn {
+            margin-right: 10px;
+        }
+
+        .add-extra-buttons {
+            margin-top: 10px;
+        }
+
+        .overview {
+            border: 1px solid #d4d9df;
+            border-radius: 4px;
+            padding: 10px;
+            background: #fff;
+        }
+
+        .overview-heading {
+            font-weight: bold;
+        }
+
+        .overview-body {
+            margin-top: 10px;
+        }
+
+        .overview-title {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .overview-photo {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+   
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mt-5">Event Timeline</h2>
+        <div class="form-group" id="eventFormContainer">
+            <label for="eventCount">Number of Events:</label>
+            <input type="number" class="form-control" id="eventCount" min="1" placeholder="Enter number of events">
+            <button class="btn btn-primary mt-3" id="createTimeline"><i class="fas fa-check"></i></button>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="timeline" id="timeline"></ul>
+                <div id="successMessage" class="alert alert-success mt-5" style="display: none;">
+                    All events are completed successfully!
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="overview" id="eventOverview" style="display: none;">
+                    <div class="overview-heading">Event Overview</div>
+                    <div class="overview-body">
+                        <div class="overview-title" id="overviewTitle"></div>
+                        <div class="overview-time" id="overviewTime"></div>
+                        <div class="overview-description" id="overviewDescription"></div>
+                        <div class="overview-coordinator" id="overviewCoordinator"></div>
+                        <div class="overview-venue" id="overviewVenue"></div>
+                        <div class="overview-resources" id="overviewResources"></div>
+                        <div class="overview-photos" id="overviewPhotos"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Event -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eventModalLabel">Edit Event</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editEventForm">
+                        <div class="form-group">
+                            <label for="editEventName">Event Name:</label>
+                            <input type="text" class="form-control" id="editEventName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventTime">Event Time:</label>
+                            <input type="datetime-local" class="form-control" id="editEventTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventDescription">Event Description:</label>
+                            <textarea class="form-control" id="editEventDescription" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventDeadline">Set Deadline:</label>
+                            <input type="datetime-local" class="form-control" id="editEventDeadline">
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventVenue">Book Venue:</label>
+                            <input type="text" class="form-control" id="editEventVenue">
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Assigning Work -->
+    <div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignModalLabel">Assign Work</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="assignWorkForm">
+                        <div class="form-group">
+                            <label for="assignEventName">Event Name:</label>
+                            <input type="text" class="form-control" id="assignEventName" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignCoordinatorName">Coordinator Name:</label>
+                            <input type="text" class="form-control" id="assignCoordinatorName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignMailId">Mail ID:</label>
+                            <input type="email" class="form-control" id="assignMailId" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="assignEventDescription">Event Description:</label>
+                            <textarea class="form-control" id="assignEventDescription" rows="3" readonly></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-tasks"></i> Assign Work</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let currentEventIndex;
+
+            $('#createTimeline').click(function () {
+                const eventCount = $('#eventCount').val();
+                const timeline = $('#timeline');
+                timeline.empty();
+                for (let i = 0; i < eventCount; i++) {
+                    timeline.append(createTimelineEvent(i));
+                }
+                $('#eventCount').hide();
+                $('#createTimeline').hide();
+            });
+
+            function createTimelineEvent(index) {
+                const eventName = `Event ${index + 1}`;
+                const eventTime = '';
+                const eventDescription = '';
+                return `
+                    <li id="event-${index}">
+                        <div class="timeline-panel">
+                            <h5 class="timeline-title">${eventName}</h5>
+                            <p><small class="text-muted timeline-time">${eventTime}</small></p>
+                            <p class="timeline-description">${eventDescription}</p>
+                            <div class="button-group">
+                                <button class="btn btn-secondary btn-sm add-event-btn" data-index="${index}" data-position="above"><i class="fas fa-arrow-up"></i></button>
+                                <button class="btn btn-secondary btn-sm add-event-btn" data-index="${index}" data-position="below"><i class="fas fa-arrow-down"></i></button>
+                                <button class="btn btn-warning btn-sm edit-btn" data-index="${index}"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm remove-btn" data-index="${index}"><i class="fas fa-trash-alt"></i></button>
+                                <button class="btn btn-info btn-sm assign-btn" data-index="${index}"><i class="fas fa-tasks"></i></button>
+                            </div>
+                        </div>
+                    </li>
+                `;
+            }
+
+            $(document).on('click', '.edit-btn', function () {
+                currentEventIndex = $(this).data('index');
+                const eventElement = $(`#event-${currentEventIndex}`);
+                const eventName = eventElement.find('.timeline-title').text();
+                const eventTime = eventElement.find('.timeline-time').text();
+                const eventDescription = eventElement.find('.timeline-description').text();
+
+                $('#editEventName').val(eventName);
+                $('#editEventTime').val(eventTime);
+                $('#editEventDescription').val(eventDescription);
+                $('#editEventDeadline').val('');
+                $('#editEventVenue').val('');
+
+                $('#eventModal').modal('show');
+            });
+
+            $(document).on('click', '.remove-btn', function () {
+                const eventIndex = $(this).data('index');
+                $(`#event-${eventIndex}`).remove();
+                updateEventIndices();
+                if ($('.timeline > li').length === 0) {
+                    $('#successMessage').show();
+                } else {
+                    $('#successMessage').hide();
+                }
+            });
+
+            $(document).on('click', '.add-event-btn', function () {
+                const index = $(this).data('index');
+                const position = $(this).data('position');
+                const newEvent = createTimelineEvent($('.timeline > li').length);
+                
+                if (position === 'above') {
+                    $(`#event-${index}`).before(newEvent);
+                } else {
+                    $(`#event-${index}`).after(newEvent);
+                }
+                
+                updateEventIndices();
+            });
+
+            $(document).on('click', '.assign-btn', function () {
+                currentEventIndex = $(this).data('index');
+                const eventElement = $(`#event-${currentEventIndex}`);
+                const eventName = eventElement.find('.timeline-title').text();
+                const eventDescription = eventElement.find('.timeline-description').text();
+
+                $('#assignEventName').val(eventName);
+                $('#assignEventDescription').val(eventDescription);
+
+                $('#assignModal').modal('show');
+            });
+
+            $('#assignWorkForm').submit(function (e) {
+                e.preventDefault();
+                alert('Work assigned successfully!');
+                $('#assignModal').modal('hide');
+            });
+
+            $(document).on('click', '.timeline-panel', function (e) {
+                e.stopPropagation();
+                const eventElement = $(this).closest('li');
+                const eventName = eventElement.find('.timeline-title').text();
+                const eventTime = eventElement.find('.timeline-time').text();
+                const eventDescription = eventElement.find('.timeline-description').text();
+                const coordinatorName = eventElement.find('.timeline-coordinator').text();
+                const venue = eventElement.find('.timeline-venue').text();
+                const resources = 'No resources available';
+                const photos = '<img src="https://via.placeholder.com/150" class="overview-photo" alt="Event Photo">';
+
+                $('#overviewTitle').text(eventName);
+                $('#overviewTime').text(`Time: ${eventTime}`);
+                $('#overviewDescription').text(`Description: ${eventDescription}`);
+                $('#overviewCoordinator').text(`Coordinator: ${coordinatorName}`);
+                $('#overviewVenue').text(`Venue: ${venue}`);
+                $('#overviewResources').text(resources);
+                $('#overviewPhotos').html(photos);
+
+                $('#eventOverview').show();
+            });
+
+            $(document).click(function () {
+                $('#eventOverview').hide();
+            });
+
+            $('#editEventForm').submit(function (e) {
+                e.preventDefault();
+                const eventName = $('#editEventName').val();
+                const eventTime = $('#editEventTime').val();
+                const eventDescription = $('#editEventDescription').val();
+                const eventDeadline = $('#editEventDeadline').val();
+                const eventVenue = $('#editEventVenue').val();
+                const eventElement = $(`#event-${currentEventIndex}`);
+                eventElement.find('.timeline-title').text(eventName);
+                eventElement.find('.timeline-time').text(eventTime);
+                eventElement.find('.timeline-description').text(eventDescription);
+                eventElement.find('.timeline-deadline').text(`Deadline: ${eventDeadline}`);
+                eventElement.find('.timeline-venue').text(`Venue: ${eventVenue}`);
+                $('#eventModal').modal('hide');
+            });
+
+            function updateEventIndices() {
+                $('#timeline li').each(function (index) {
+                    $(this).attr('id', `event-${index}`);
+                    $(this).find('.edit-btn').attr('data-index', index);
+                    $(this).find('.remove-btn').attr('data-index', index);
+                    $(this).find('.add-event-btn').attr('data-index', index);
+                    $(this).find('.assign-btn').attr('data-index', index);
+                });
+            }
+
+            $('#eventOverview').click(function (e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+     <script>
+ 
+  	
+  	if(sessionStorage.getItem("type")===null||sessionStorage.getItem("type")==='student'){
+  		  var addEventElement = document.getElementById("eventFormContainer");
+            
+                addEventElement.style.display = "none";
+            
+  	}
+ 
+  </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Rajendra</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<script>
+function logout(){
+
+sessionStorage.clear();
+window.location.href="exampl.html";
+}
+</script>
+<script>
+    
+	if(sessionStorage.getItem("type") === null )
+	{
+	
+	window.location.href="login_form.html";
+	}
+	</script>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header text-center">
+                <div class="profile-circle mx-auto">
+                    <span class="profile-initial">R</span>
+                </div>
+                <h3>Rajendra</h3>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">Personal Information</h5>
+                <p class="card-text"><strong>ID:</strong> R200040</p>
+                <p class="card-text"><strong>Email:</strong> rr200040@rguktrkv.ac.in</p>
+                <p class="card-text"><strong>Course:</strong> E3 CSE</p>
+                <h5 class="card-title mt-4">Roles and Activities</h5>
+                <p class="card-text"><strong>Volunteer:</strong> Advitha</p>
+                <p class="card-text"><strong>Coordinator:</strong> Vinayak Chavithi</p>
+                <p class="card-text"><strong>Organizer:</strong> Abhiyanth</p>
+            </div>
+        </div> <br>
+       <center><button class ="btn btn-primary" onclick="logout()">Log Out</button></center>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

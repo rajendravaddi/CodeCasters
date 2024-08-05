@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Dashboard</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .profile-circle {
+            width: 50px;
+            height: 50px;
+            background-color: #343a40;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .notification {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-group {
+            margin-bottom: 20px;
+        }
+    </style>
+     <script>
+    
+	if(sessionStorage.getItem("type") === null )
+	{
+	
+	window.location.href="login_form.html";
+	}
+	</script>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-circle">R</div>
+        <h3>Rajendra</h3>
+        <p>ID: R200040</p>
+        <p>Studying: E3 CSE</p>
+        <p>Volunteer in Advitha, Coordinator for Vinayak Chavithi, Organizer for Abhiyanth</p>
+        <p>Email: rr200040@rguktrkv.ac.in</p>
+        <hr>
+        <div class="btn-group" role="group" aria-label="Notification Type">
+            <button class="btn btn-primary" onclick="showNotifications('organizer')">Organizer Notifications</button>
+            <button class="btn btn-primary" onclick="showNotifications('student')">Student Notifications</button>
+        </div>
+        <div id="notifications"></div>
+    </div>
+
+    <script>
+        function showNotifications(role) {
+            const notifications = document.getElementById('notifications');
+            notifications.innerHTML = '';
+
+            if (role === 'organizer') {
+                notifications.innerHTML = `
+                    <div class="notification">
+                        <p>Art Coordinator requests color papers.</p>
+                        <button class="btn btn-success" onclick="showDashboard('accept')">Accept</button>
+                        <button class="btn btn-danger" onclick="showDashboard('reject')">Reject</button>
+                    </div>
+                    <div class="notification">
+                        <p>Flashmob is conducted at 4 PM.</p>
+                        <button class="btn btn-primary" onclick="replyNotification('flashmob@rguktrkv.ac.in')">Reply</button>
+                    </div>
+                    <div class="notification">
+                        <p>You are appointed as Abhiyanth organizer.</p>
+                    </div>
+                    <div class="notification">
+                        <p>Event timeline notification.</p>
+                    </div>
+                `;
+            } else if (role === 'student') {
+                notifications.innerHTML = `
+                    <div class="notification">
+                        <p>Pre-event timing: 10:30 to 11:30 AM.</p>
+                    </div>
+                    <div class="notification">
+                        <p>Flash mob timing: 4:30 to 6:00 PM.</p>
+                    </div>
+                    <div class="notification">
+                        <p>Fun vages timing: 11:30 AM to 3:00 PM.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function showDashboard(action) {
+            if (action === 'accept') {
+                alert('Request accepted.');
+            } else if (action === 'reject') {
+                alert('Request rejected.');
+            }
+        }
+
+        function replyNotification(email) {
+            window.location.href = `mailto:${email}`;
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

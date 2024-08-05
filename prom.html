@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Promotion and Registration</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .content {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1 class="text-center mb-4">Event Promotion and Registration</h1>
+        <div class="container">
+            <div class="row">
+                <!-- Social Media Promotion -->
+                <div class="col-md-6" id="socialmedia">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Promote via Social Media</h5>
+                            <p class="card-text">Use social media platforms to promote your events and reach a wider audience.</p>
+                            <button class="btn btn-primary" onclick="promoteSocialMedia()">Promote</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Email Notifications -->
+                <div class="col-md-6" id="sendmails">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Send Email Notifications</h5>
+                            <p class="card-text">Send email notifications to your audience about upcoming events.</p>
+                           <a href="chattool.html"> <button class="btn btn-primary" >Send Emails</button></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- In-App Notifications -->
+              
+                <!-- Online Registration -->
+                <div class="col-md-6 mt-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Online Registration</h5>
+                            <p class="card-text">Allow users to register for events online through a simple registration form.</p>
+                            <button class="btn btn-primary" onclick="openRegistrationForm()">Open Registration Form</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ticketing System -->
+                
+          
+
+    <!-- Placeholder modals for demonstration -->
+    <!-- Social Media Promotion Modal -->
+    <div class="modal fade" id="socialMediaModal" tabindex="-1" aria-labelledby="socialMediaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="socialMediaModalLabel">Promote via Social Media</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Social Media promotion features are not implemented yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Notifications Modal -->
+    <div class="modal fade" id="emailNotificationsModal" tabindex="-1" aria-labelledby="emailNotificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailNotificationsModalLabel">Send Email Notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Email notifications features are not implemented yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- In-App Notifications Modal -->
+    <div class="modal fade" id="inAppNotificationsModal" tabindex="-1" aria-labelledby="inAppNotificationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inAppNotificationsModalLabel">In-App Notifications</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>In-App notifications features are not implemented yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Form Modal -->
+    <div class="modal fade" id="registrationFormModal" tabindex="-1" aria-labelledby="registrationFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrationFormModalLabel">Online Registration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Online Registration features are not implemented yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ticketing System Modal -->
+    <div class="modal fade" id="ticketingSystemModal" tabindex="-1" aria-labelledby="ticketingSystemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ticketingSystemModalLabel">Ticketing System</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Ticketing system features are not implemented yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function promoteSocialMedia() {
+            $('#socialMediaModal').modal('show');
+        }
+
+        function sendEmailNotifications() {
+            $('#emailNotificationsModal').modal('show');
+        }
+
+        function sendInAppNotifications() {
+            $('#inAppNotificationsModal').modal('show');
+        }
+
+        function openRegistrationForm() {
+            $('#registrationFormModal').modal('show');
+        }
+
+        function openTicketingSystem() {
+            $('#ticketingSystemModal').modal('show');
+        }
+    </script>
+    
+  	<script>
+  	if(sessionStorage.getItem("type")===null||sessionStorage.getItem("type")==='student'){
+  		  var addEventElement = document.getElementById("socialmedia");
+              		  var addEventElement2 = document.getElementById("sendmails");
+                addEventElement.style.display = "none";
+                addEventElement2.style.display = "none";
+            
+  	}
+ 
+  </script>
+</body>
+</html>

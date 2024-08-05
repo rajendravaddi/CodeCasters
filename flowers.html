@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Flowers</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .resource-card {
+            margin-bottom: 20px;
+        }
+        #successMessage {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Manage Flowers</h1>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Flower Availability</h5>
+                <p id="availability" class="card-text">Current availability: <span id="currentAvailability">200</span> flowers</p>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Request Flowers</h5>
+                <form id="requestForm">
+                    <div class="form-group">
+                        <label for="requesterName">Your Name</label>
+                        <input type="text" class="form-control" id="requesterName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="requestQuantity">Quantity</label>
+                        <input type="number" class="form-control" id="requestQuantity" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Request Flowers</button>
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Flower Requests</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Requester</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestTableBody">
+                        <!-- Requests will be added here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="successMessage" class="alert alert-success mt-4" role="alert">
+            Request processed successfully!
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let currentAvailability = 200;
+            const requests = [];
+
+            function updateAvailability() {
+                $('#currentAvailability').text(currentAvailability);
+            }
+
+            function displayRequests() {
+                const requestTableBody = $('#requestTableBody');
+                requestTableBody.empty();
+                requests.forEach((request, index) => {
+                    requestTableBody.append(`
+                        <tr data-index="${index}">
+                            <td>${request.requesterName}</td>
+                            <td>${request.requestedQuantity}</td>
+                            <td>${request.status}</td>
+                            <td>
+                                ${request.status === 'Pending' ? '<button class="btn btn-success approve-request">Approve</button> &nbsp;<button class="btn btn-danger reject-request">Reject</button>' : ''}
+                            </td>
+                        </tr>
+                    `);
+                });
+            }
+
+            $('#requestForm').submit(function (e) {
+                e.preventDefault();
+                const requesterName = $('#requesterName').val();
+                const requestedQuantity = parseInt($('#requestQuantity').val(), 10);
+
+                const request = {
+                    requesterName,
+                    requestedQuantity,
+                    status: 'Pending'
+                };
+
+                requests.push(request);
+                displayRequests();
+                $('#requestForm')[0].reset();
+                $('#successMessage').show().delay(2000).fadeOut();
+            });
+
+            $(document).on('click', '.approve-request', function () {
+                const index = $(this).closest('tr').data('index');
+                const request = requests[index];
+                if (request.requestedQuantity <= currentAvailability) {
+                    currentAvailability -= request.requestedQuantity;
+                    request.status = 'Approved';
+                    updateAvailability();
+                    displayRequests();
+                    $('#successMessage').show().delay(2000).fadeOut();
+                } else {
+                    alert('Not enough flowers available to approve this request.');
+                }
+            });
+
+            $(document).on('click', '.reject-request', function () {
+                const index = $(this).closest('tr').data('index');
+                requests[index].status = 'Rejected';
+                displayRequests();
+                $('#successMessage').show().delay(2000).fadeOut();
+            });
+
+            // Example requests
+            requests.push({ requesterName: 'Alice', requestedQuantity: 50, status: 'Pending' });
+            requests.push({ requesterName: 'Bob', requestedQuantity: 30, status: 'Pending' });
+            displayRequests();
+        });
+    </script>
+</body>
+</html>

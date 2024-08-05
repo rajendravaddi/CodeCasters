@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Form with Dropdown and Enhanced Validation</title>
+<style>
+    /* Basic styling for form */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    form {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        width: 300px;
+    }
+    label, input, select, .error {
+        display: block;
+        margin-bottom: 10px;
+    }
+    input[type="email"], input[type="password"], input[id="ID"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    select {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    input[type="submit"], .forgot-password {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        margin-top: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    input[type="submit"]:hover, .forgot-password:hover {
+        background-color: #45a049;
+    }
+    .forgot-password {
+        background-color: #f44336;
+    }
+    .error {
+        color: #ff0000;
+    }
+</style>
+<script>
+	if(sessionStorage.getItem("id")!==null){
+		window.location.href = 'Dashboard.html';
+	}
+</script>
+</head>
+<body>
+
+<form id="loginForm" method="post">
+    <label for="userType">User Type:</label>
+    <select id="userType" name="userType" required>
+        <option value="">Select User Type</option>
+        <option value="student">Student</option>
+        <option value="organizer">Organizer</option>
+        <option value="faculty">Faculty</option>
+    </select>
+    
+    <div class="fac" style="display: none;">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    
+    <div class="user" style="display: none;">
+        <label for="ID">ID:</label>
+        <input id="ID" name="ID" required  placeholder="Use R200040 as ID">
+        <div class="have" style="display: none;">
+            <label for="passwordUser">Password:</label>
+            <input type="password" id="passwordUser" name="passwordUser" required>
+            <button type="button" class="forgot-password" id="forgotPassword">Forgot Password?</button>
+        </div>
+    </div>
+    
+    <input id="first" type="submit" value="Next" >
+</form>
+
+<script>
+document.getElementById('userType').addEventListener('change', function() {
+    var userType = this.value;
+    var facDiv = document.querySelector('.fac');
+    var userDiv = document.querySelector('.user');
+    
+    if (userType === 'faculty') {
+        facDiv.style.display = 'block';
+        userDiv.style.display = 'none';
+        document.getElementById("first").value = "Submit";
+    } else {
+        userDiv.style.display = 'block';
+        facDiv.style.display = 'none';
+    }
+});
+
+document.getElementById('ID').addEventListener('blur', function() {
+    var idValue = this.value;
+    if (idValue !== '') {
+        checkID(idValue);
+    }
+});
+
+function checkID(id) {
+    // Simulate ID check
+    if (id === 'R200040') {
+        document.querySelector('.have').style.display = 'block';
+    } else {
+        alert('Please enter a valid ID number');
+    }
+}
+
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    submitted(); // Call the custom submission function
+});
+
+function submitted() {
+    var userTypeField = document.getElementById('userType');
+    var emailField = document.getElementById('email');
+    var passwordField = document.getElementById('password');
+    var idField = document.getElementById('ID');
+    var passwordUserField = document.getElementById('passwordUser');
+    var isValid = true;
+
+    // Reset previous error messages
+    var errorMessages = document.querySelectorAll('.error');
+    errorMessages.forEach(function(errorMessage) {
+        errorMessage.parentNode.removeChild(errorMessage);
+    });
+
+    // Validate user type selection
+    if (userTypeField.value === '') {
+        isValid = false;
+        var userTypeError = document.createElement('span');
+        userTypeError.className = 'error';
+        userTypeError.textContent = 'Please select a user type';
+        userTypeField.parentNode.appendChild(userTypeError);
+    }
+
+    // Faculty login validation
+    if (userTypeField.value === 'faculty') {
+        // Validate email format
+        if (!isValidEmail(emailField.value)) {
+            isValid = false;
+            var emailError = document.createElement('span');
+            emailError.className = 'error';
+            emailError.textContent = 'Please enter a valid email address';
+            emailField.parentNode.appendChild(emailError);
+        }
+
+        // Validate password length and complexity
+        if (passwordField.value.length < 8 || !isPasswordComplex(passwordField.value)) {
+            isValid = false;
+            var passwordError = document.createElement('span');
+            passwordError.className = 'error';
+            passwordError.textContent = 'Password must be at least 8 characters long and include a mix of uppercase, lowercase, number, and special character';
+            passwordField.parentNode.appendChild(passwordError);
+        }
+    }
+
+    // User (student or organizer) ID validation
+    if (userTypeField.value !== 'faculty') {
+        if (idField.value === '') {
+            isValid = false;
+            var idError = document.createElement('span');
+            idError.className = 'error';
+            idError.textContent = 'Please enter your ID';
+            idField.parentNode.appendChild(idError);
+        }
+    }
+
+    // If valid, proceed with form submission or additional logic
+    if (isValid) {
+        alert('Form is valid and ready for submission');
+        sessionStorage.setItem('type',userTypeField.value)
+        sessionStorage.setItem('id',idField)
+        if (userTypeField.value === 'faculty') {
+         sessionStorage.setItem('email',emailField)
+        }
+       
+        // Here you would normally submit the form data to the server
+        // For demonstration, we'll redirect to a new page
+        window.location.href = 'home_hack.html';
+    }
+}
+
+// Function to validate email format
+function isValidEmail(email) {
+    var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+}
+
+// Function to validate password complexity
+function isPasswordComplex(password) {
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+    return passwordRegex.test(password);
+}
+
+document.getElementById('forgotPassword').addEventListener('click', function() {
+    window.location.href = 'emailSend.html';
+});
+</script>
+
+</body>
+</html>

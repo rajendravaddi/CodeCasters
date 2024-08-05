@@ -1,0 +1,115 @@
+
+<html>
+<head>
+<style>
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 300px;
+}
+
+.feedback {
+  margin-bottom: 20px;
+}
+
+.stars {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.star-container {
+  display: flex;
+  
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.star {
+  font-size: 24px;
+  color: #ffd700; /* gold color */
+}
+
+.percentage-line {
+  position: absolute;
+  bottom: -10px;
+  height: 4px;
+  background-color: #4caf50; /* green color */
+}
+
+p {
+  margin: 5px 0;
+}
+a{
+text-decoration:none;
+}
+button{
+align-items:left;
+display:flex;
+height:30px;
+width:95px;
+font-size:20px;
+background-color:lightgrey;
+
+
+
+}
+
+</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Visualization</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Feedback Ratings Visualization</h1>
+    <div class="feedback">
+      
+      <div class="stars">
+        <div class="star-container">
+          <span class="star">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          <div class="percentage-line" style="width: 90%;"></div>
+        </div>
+        <div class="star-container">
+          <span class="star">&#9733;&#9733;&#9733;&#9733;</span>
+          <div class="percentage-line" style="width: 30%;"></div>
+        </div>
+        <div class="star-container">
+          <span class="star">&#9733;&#9733;&#9733;</span>
+          <div class="percentage-line" style="width: 70%;"></div>
+        </div>
+        <div class="star-container">
+          <span class="star">&#9733;&#9733;</span>
+          <div class="percentage-line" style="width: 5%;"></div>
+        </div>
+        <div class="star-container">
+          <span class="star">&#9733;</span>
+          <div class="percentage-line" style="width: 2%;"></div>
+        </div>
+      </div>
+      
+    </div>
+    <div>
+      <a href="feedback_submission.html"><button> &nbsp;< Back </button></a>
+      </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

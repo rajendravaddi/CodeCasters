@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Promotion</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+            
+        body {
+            padding-top: 50px;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 60px;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            margin-left: 80px; /* Adjusted for sidebar width */
+            padding: 20px;
+        }
+        .modal-dialog {
+            max-width: 800px; /* Adjust width as needed */
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 18px;
+        }
+    
+        body {
+            padding-top: 50px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .chat-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="container">
+        <h1 class="text-center mb-4">Volunteers Management</h1>
+        <button type="button" class="btn btn-success mb-4" data-toggle="modal" data-target="#addVolunteersModal">Add Volunteers</button>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Registration</h5>
+                        <p class="card-text">Register for events.</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#registrationModal">Open Registration</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Scheduling</h5>
+                        <p class="card-text">Manage event schedules.</p>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#schedulingModal">Open Scheduling</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Volunteers Modal -->
+    <div class="modal fade" id="addVolunteersModal" tabindex="-1" aria-labelledby="addVolunteersModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addVolunteersModalLabel">Add Volunteers</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="volunteersForm">
+                        <div class="form-group">
+                            <label for="volunteersEmails">Email IDs (comma separated)</label>
+                            <textarea class="form-control" id="volunteersEmails" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Volunteers</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registrationModalLabel">Event Registration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="registrationForm">
+                        <div class="form-group">
+                            <label for="eventName">Event Name</label>
+                            <select class="form-control" id="eventName" required>
+                                <option>Chess</option>
+                                <option>Rangoli</option>
+                                <option>Carrom</option>
+                                <option>Hackathon</option>
+                                <option>Workshop</option>
+                                <option>Cricket</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scheduling Modal -->
+    <div class="modal fade" id="schedulingModal" tabindex="-1" aria-labelledby="schedulingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="schedulingModalLabel">Event Scheduling</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="schedulingForm">
+                        <div id="scheduleContainer">
+                            <div class="form-group">
+                                <label for="workDetails">Work Details</label>
+                                <input type="text" class="form-control" id="workDetails" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="workEmail">Email ID</label>
+                                <input type="email" class="form-control" id="workEmail" required>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="addScheduleField">Add Work Field</button>
+                        <button type="submit" class="btn btn-primary">Save Schedule</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Icon -->
+    <div class="chat-icon" data-toggle="modal" data-target="#chatModal">
+        <span>&#x2709;</span>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby="chatModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="chatModalLabel">Chat</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="chatForm">
+                        <div class="form-group">
+                            <label for="chatEmail">Email ID</label>
+                            <input type="email" class="form-control" id="chatEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="chatMessage">Message</label>
+                            <textarea class="form-control" id="chatMessage" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#addScheduleField').click(function () {
+                const scheduleField = `
+                    <div class="form-group">
+                        <label for="workDetails">Work Details</label>
+                        <input type="text" class="form-control" id="workDetails" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="workEmail">Email ID</label>
+                        <input type="email" class="form-control" id="workEmail" required>
+                    </div>
+                `;
+                $('#scheduleContainer').append(scheduleField);
+            });
+
+            $('#volunteersForm').submit(function (e) {
+                e.preventDefault();
+                const emails = $('#volunteersEmails').val().split(',');
+                console.log('Volunteers added:', emails);
+                $('#addVolunteersModal').modal('hide');
+                $('#volunteersForm')[0].reset();
+            });
+
+            $('#registrationForm').submit(function (e) {
+                e.preventDefault();
+                const eventName = $('#eventName').val();
+                console.log('Registered for event:', eventName);
+                $('#registrationModal').modal('hide');
+                $('#registrationForm')[0].reset();
+            });
+
+            $('#schedulingForm').submit(function (e) {
+                e.preventDefault();
+                const workDetails = [];
+                $('#scheduleContainer .form-group').each(function () {
+                    const workDetail = $(this).find('#workDetails').val();
+                    const workEmail = $(this).find('#workEmail').val();
+                    workDetails.push({ workDetail, workEmail });
+                });
+                console.log('Schedule saved:', workDetails);
+                $('#schedulingModal').modal('hide');
+                $('#schedulingForm')[0].reset();
+            });
+
+            $('#chatForm').submit(function (e) {
+                e.preventDefault();
+                const email = $('#chatEmail').val();
+                const message = $('#chatMessage').val();
+                console.log('Chat message sent to', email, ':', message);
+                $('#chatModal').modal('hide');
+                $('#chatForm')[0].reset();
+            });
+        });
+    </script>
+</body>
+</html>

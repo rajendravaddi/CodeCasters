@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Verification and Password Reset</title>
+<style>
+    /* Basic styling */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    form {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        width: 300px;
+    }
+    label, input, .error {
+        display: block;
+        margin-bottom: 10px;
+    }
+    input[type="text"], input[type="password"] {
+        width: calc(100% - 22px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    input[type="submit"] {
+        width: 100%;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        margin-top: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+    .error {
+        color: #ff0000;
+    }
+    .success {
+        color: #4CAF50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+</head>
+<body>
+
+<form id="verificationForm">
+    <div class="success">A verification code has been sent to your email.</div>
+    
+    <label for="verificationCode">Enter Verification Code:</label>
+    <input type="text" id="verificationCode" name="verificationCode" required>
+
+    <label for="newPassword">New Password:</label>
+    <input type="password" id="newPassword" name="newPassword" required>
+
+    <label for="confirmPassword">Confirm New Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required>
+    
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+document.getElementById('verificationForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+    verifyAndSubmit(); // Call the custom submission function
+});
+
+function verifyAndSubmit() {
+    var verificationCodeField = document.getElementById('verificationCode');
+    var newPasswordField = document.getElementById('newPassword');
+    var confirmPasswordField = document.getElementById('confirmPassword');
+    var isValid = true;
+
+    // Reset previous error messages
+    var errorMessages = document.querySelectorAll('.error');
+    errorMessages.forEach(function(errorMessage) {
+        errorMessage.parentNode.removeChild(errorMessage);
+    });
+
+    // Validate the verification code (default code is 1234)
+    if (verificationCodeField.value !== '1234') {
+        isValid = false;
+        var codeError = document.createElement('span');
+        codeError.className = 'error';
+        codeError.textContent = 'Please enter a valid 4-digit verification code';
+        verificationCodeField.parentNode.appendChild(codeError);
+    }
+
+    // Validate the new password length and complexity
+    if (newPasswordField.value.length < 8 || !isPasswordComplex(newPasswordField.value)) {
+        isValid = false;
+        var passwordError = document.createElement('span');
+        passwordError.className = 'error';
+        passwordError.textContent = 'Password must be at least 8 characters long and include a mix of uppercase, lowercase, number, and special character';
+        newPasswordField.parentNode.appendChild(passwordError);
+    }
+
+    // Validate that new password and confirm password match
+    if (newPasswordField.value !== confirmPasswordField.value) {
+        isValid = false;
+        var confirmPasswordError = document.createElement('span');
+        confirmPasswordError.className = 'error';
+        confirmPasswordError.textContent = 'Passwords do not match';
+        confirmPasswordField.parentNode.appendChild(confirmPasswordError);
+    }
+
+    // If valid, show a success message
+    if (isValid) {
+        alert('Password reset successful!');
+        window.location.href = 'index.html';
+    }
+}
+
+// Function to validate password complexity
+function isPasswordComplex(password) {
+    // Regular expression to check for at least one lowercase letter, one uppercase letter, one digit, and one special character
+    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+
+<html>
+<head>
+<style>
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  width: 300px;
+}
+
+.feedback {
+  margin-bottom: 20px;
+}
+
+.stars {
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.star-container {
+  display: flex;
+  
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.star {
+  font-size: 30px;
+  color: #ffd700; /* gold color */
+ 
+}
+
+
+p {
+  margin: 5px 0;
+}
+.sub{
+
+	height:30px;
+	width:200px;
+}
+button{
+width:80px;
+height:30px;
+font-size:15spx;
+}
+
+
+
+</style>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Visualization</title>
+  <link rel="stylesheet" href="styles.css">
+  
+  <script>
+  function validatelogin(){
+  	
+  	if(sessionStorage.getItem("type")===null){
+  		window.location.href="login_form.html";
+  	}
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Feedback Ratings Visualization</h1>
+    <div class="feedback">
+      
+    <label class="radio-container"> <input type="radio" name="star">  <span class="star">&#9733;&#9733;&#9733;&#9733;&#9733;</span><br>
+        <label class="radio-container"> <input type="radio" name="star">    <span class="star">&#9733;&#9733;&#9733;&#9733;</span><br>
+          <label class="radio-container">   <input type="radio" name="star">    <span class="star">&#9733;&#9733;&#9733;</span><br>  
+               <label class="radio-container"> <input type="radio" name="star">        <span class="star">&#9733;&#9733;</span> <br>
+                   <label class="radio-container">      <input type="radio" name="star">     <span class="star">&#9733;</span> <br><br>
+                       <center><input type="submit" class="sub" name="rate" value="RATE" onclick="validatelogin()">  <a href="feedback_stars.html"><button>Reviews</button></a></center>
+    </div>
+  </div>
+  <div>
+
+</div>
+  <script src="script.js"></script>
+
+</body>
+</html>
+

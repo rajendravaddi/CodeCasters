@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Management Resources</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .resource-card {
+            margin-bottom: 20px;
+        }
+        .card-body {
+            height: 200px; /* Adjust height as necessary */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    </style>
+    <script>
+    
+	if(sessionStorage.getItem("type") === null )
+	{
+	
+	window.location.href="login_form.html";
+	}
+	
+	
+	else if(sessionStorage.getItem("type")!=='organizer')  {
+	
+	window.location.href="resouceuser.html";
+	
+	
+	}
+</script>
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Event Management Resources</h1>
+        <button type="button" class="btn btn-success mb-4" data-toggle="modal" data-target="#addResourceModal">Add Resource</button>
+
+        <div class="row" id="resourceContainer">
+            <div class="col-md-4 resource-card" data-resource-name="Flowers">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Flowers</h5>
+                        <p class="card-text">Manage flower arrangements and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="flowers.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Art Equipment">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Art Equipment</h5>
+                        <p class="card-text">Manage art equipment and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="art_equipment.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Tables">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tables</h5>
+                        <p class="card-text">Manage tables and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="tables.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Speakers">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Speakers</h5>
+                        <p class="card-text">Manage speakers and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="speakers.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Chairs">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Chairs</h5>
+                        <p class="card-text">Manage chairs and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="chairs.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Scissors">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Scissors</h5>
+                        <p class="card-text">Manage scissors and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="scissors.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Bar Gates">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Bar Gates</h5>
+                        <p class="card-text">Manage bar gates and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="bar_gates.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Lights">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lights</h5>
+                        <p class="card-text">Manage lights and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="lights.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 resource-card" data-resource-name="Sound Systems">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Sound Systems</h5>
+                        <p class="card-text">Manage sound systems and availability.</p>
+                        <div>
+                            <button class="btn btn-primary manage-btn" data-resource-link="sound_systems.html">Manage</button>
+                            <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Resource Modal -->
+    <div class="modal fade" id="addResourceModal" tabindex="-1" aria-labelledby="addResourceModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addResourceModalLabel">Add Resource</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addResourceForm">
+                        <div class="form-group">
+                            <label for="resourceName">Resource Name</label>
+                            <input type="text" class="form-control" id="resourceName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="resourceDescription">Resource Description</label>
+                            <textarea class="form-control" id="resourceDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="resourceLink">Resource Link</label>
+                            <input type="text" class="form-control" id="resourceLink" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Resource</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Resource Modal -->
+    <div class="modal fade" id="manageResourceModal" tabindex="-1" aria-labelledby="manageResourceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="manageResourceModalLabel">Manage Resource</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="resourceIframe" src="" width="100%" height="500px" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Add Resource
+            $('#addResourceForm').submit(function (e) {
+                e.preventDefault();
+                const resourceName = $('#resourceName').val();
+                const resourceDescription = $('#resourceDescription').val();
+                const resourceLink = $('#resourceLink').val();
+
+                const newResourceCard = `
+                    <div class="col-md-4 resource-card" data-resource-name="${resourceName}">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${resourceName}</h5>
+                                <p class="card-text">${resourceDescription}</p>
+                                <div>
+                                    <button class="btn btn-primary manage-btn" data-resource-link="${resourceLink}">Manage</button>
+                                    <button class="btn btn-danger remove-btn float-right">Remove Resource</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                $('#resourceContainer').append(newResourceCard);
+                $('#addResourceModal').modal('hide');
+                $('#addResourceForm')[0].reset();
+            });
+
+            // Remove Resource
+            $(document).on('click', '.remove-btn', function () {
+                $(this).closest('.resource-card').remove();
+            });
+
+            // Manage Resource
+            $(document).on('click', '.manage-btn', function () {
+                const resourceLink = $(this).data('resource-link');
+                $('#resourceIframe').attr('src', resourceLink);
+                $('#manageResourceModal').modal('show');
+            });
+        });
+    </script>
+</body>
+</html>
